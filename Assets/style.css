@@ -90,3 +90,19 @@
     transform: translate(0, 0);
     box-shadow: 2px 2px var(--dark);
   }
+
+  .row {
+    white-space: pre-wrap;
+    height: 80px;
+    border-top: 1px solid white;
+    
+  }
+
+  .weather-cls {
+      border: solid;
+  }
+
+  img {
+    height: 10vh;
+    width: 10vh;
+  }
