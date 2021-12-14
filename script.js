@@ -26,7 +26,35 @@ function populateCityForcast() {
             cityList.append(cityDiv)
             let forecastCardsDiv = $("<div>")
             
-            let count = 8;
+            
+            createCityForcastHtml(data);
+
+            // if(containerEl[index] === 0) {
+            //     containerEl = "<div class='container'></div>";
+            //     if else (containerEl[index]>=0) {
+            //         containerEl[index]
+            //     }
+            // }
+            // var containerEle = "";
+            
+        })
+        .catch(function(ex) {
+            console.log("Error" + ex);
+          // catch any errors
+
+        });
+        
+}
+
+
+//create data using html
+function createCityForcastHtml(data) {
+    // Clearing up existing element with humidityContainerId or forcast results for old city search.
+
+    let firstDisplayedContainerEle = $( ".container");
+    firstDisplayedContainerEle.remove();
+
+    let count = 8;
             let dayIndex = [0, count, 2*count,3*count, 4*count];
 
             
@@ -44,22 +72,23 @@ function populateCityForcast() {
                 let dateParaEle = $("<p>")
                 let dateBoldEle = $("<b>")
                 let weatherDateObj = new Date(weatherDate*1000);
-                let formattedWeatherDate = weatherDateObj.getMonth() + "/" + weatherDateObj.getDay() + "/" + weatherDateObj.getFullYear();
+                let formattedWeatherDate = (weatherDateObj.getMonth() + 1) + "/" + (weatherDateObj.getDate()) + "/" + weatherDateObj.getFullYear();
                 dateBoldEle.append("Date: " + formattedWeatherDate);
                 dateParaEle.append(dateBoldEle);
                 columnEle.append(dateParaEle);
 
                 let imgPath = "sun.gif";
                 let imgEle = $("<img src='" + imgPath + "'>")
-                columnEle.append(imgEle);
+                
 
                 let imgPath2 = "cold.jpeg";
                 let imgEle2 = $("<img src='" + imgPath2 + "'>")
-                columnEle.append(imgEle2);
-
-                if(temperature < 286 ) {imgEle;}
-                 else if(imgEle2);
-
+                
+                if(temperature < 275 ) {
+                    columnEle.append(imgEle);
+                } else {
+                    columnEle.append(imgEle2);
+                }
                 let tempEle = $("<p>")
                 tempEle.append("Temp: " + temperature)
                 columnEle.append(tempEle);
@@ -73,60 +102,11 @@ function populateCityForcast() {
                 humidityEle.append("Humidity: " + humidity);
 
                 rowEle.append(columnEle);
-                
-
-            // // let windSpeed = $("div")
-
-            // let count = 8;
-            // let dayIndex = [0, count, 2*count,3*count, 4*count];
-            // for(let i = 0; i < dayIndex.length; i++){
-            //     console.log(data.list[dayIndex[i]]).array.wind
-
-
-
-            
-            //-------------------------------------------------------
-            //NOT WORKING
-            // let windCardsDiv = $("<div>")
-            // let row = $("<div class='row'>");
-            // let column1 = $("<div class='col-sm-1'>");
-
-            // let column2 = $("<div class='col-sm-1'>");
-
-            // let column3 = $("<div class='col-sm-1'>");
-
-            // let column4 = $("<div class='col-sm-1'>");
-
-            // let column5 = $("<div class='col-sm-1'>");
 
             }
             containerEle.append(rowEle);
 
             $(".5day-forecast-cards").parent().append(containerEle);
-            
-            createCityForcastHtml(pickedForcastData);
-            
-        })
-        .catch(function(ex) {
-            console.log("Error" + ex);
-          // catch any errors
-
-        });
-        
-}
-
-
-//create data using html
-function createCityForcastHtml(pickedForcastData) {
-    for(let index=0;index<pickedForcastData.length;index++) {
-        var temprature = pickedForcastData[index].main.temp;
-        var humidity = pickedForcastData[index].main.humidity;
-        var windSpeed = pickedForcastData[index].wind.speed;
-        
-
-        // 1. Create Html for each day using above variables
-        // let row = $("<div class='row'>");
-    }
 }
 //generating page and static html buttons
 function generatingPage() {
@@ -203,5 +183,16 @@ function pickForcasts(forcastData) {
         // 1. Add cityNameFromUser to Local Storage
         // 2. Refresh the page
         var cityNameFromUser = event.text();
+        for(let i = 0; i < cityNameFromUser.length; i++){
+            let getTxtArea = $("#cityTxtBxId" + i).val()
+            localStorage.setItem("cityTxtBxIdea"+i, getTxtArea);
+        }
     })
+
+    // $(".saveBtn").on("click", function(){
+        // for(let i = 0; i < businessHours.length; i++){
+        //     let getTxtArea = $("#textarea" + i).val()
+        //     localStorage.setItem("textarea"+i, getTxtArea);
+        // }
+    // })
     //-------------------------------------------
