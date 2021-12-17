@@ -6,9 +6,9 @@ var forecastCards = $("#forecastCards")
 
 // Call this first: generatingPage();
 
-function populateCityForcast() {
-    let cityName = $("#cityTxtBxId").val()
-    let forcastUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&appid=" + APP_ID;
+function populateCityForcast(name) {
+    //let cityName = $("#cityTxtBxId").val()
+    let forcastUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + name + "&appid=" + APP_ID;
     
     // actually fetches url and turns it to a string using json
     fetch(forcastUrl)  
@@ -28,6 +28,7 @@ function populateCityForcast() {
             
             
             createCityForcastHtml(data);
+            todayForecastEle(data);
 
             // if(containerEl[index] === 0) {
             //     containerEl = "<div class='container'></div>";
@@ -45,6 +46,7 @@ function populateCityForcast() {
         });
         
 }
+
 
 
 //create data using html
@@ -110,15 +112,6 @@ function createCityForcastHtml(data) {
 }
 //generating page and static html buttons
 function generatingPage() {
-    /*
-    <div class="card">
-            <h3 class="card-header text-uppercase">Search By City</h3>
-                <label class="form-label" for="username">Search by City</label>
-                <input name="cityTxtBxId" id="cityTxtBxId" type="text" autofocus="true"/>
-                <button id="searchBtnId" type="submit" class="btn">Search</button>
-
-    */
-
     // 1. Get Search History from local Storage
     //2. For all Cities in following loop
     for(index=0;index<pickedForcastData.length();index++) {
@@ -127,19 +120,47 @@ function generatingPage() {
     // </div>
     
 }
+
+
+
+function todayForecastEle(data) {
+    console.log('data', data)
+    // for(let i = 0; i < pickedForecasts.length; i++){
+    //     let todayData = pickedForecasts[i];
+    //     console.log('today data',todayData)
+    // }
+    let div = $("<div class='tile is-parent is-6'>");
+    let article = $("<article class='tile is-child box'>");
+    let pTitle = $("<p class='title'>")
+    let pSubTitle = $("<p class='subtitle'>")
+
+    let cityName = data.city.name
+    let country = data.city.country
+    
+    pSubTitle.text(data.city.country)
+    pTitle.text(data.city.name)
+    article.append(pTitle, pSubTitle)
+    div.append(article) 
+    $("#todayForecast").append(div)
+
+    // return `<div class="tile is-parent is-6">
+    //             <article class="tile is-child box">
+    //             <p class="title"${cityName}</p>
+    //             <p class="subtitle">${country}</p>
+    //             <div class="content">
+    //             <p>${name }</p>
+    //             </div>
+    //             </article>
+    //             </div>`
+}
+
+
 //filterin g out to 5 correct responses. 12pm or 3pm?
 //-----------------------------------------------------------------
 function pickForcasts(forcastData) {
     var pickedForcasts = forcastData.list.slice(0, 5);
     return pickedForcasts;
 }
-    // lat
-
-    // lon
-
-    // units = imperial
-
-    // exclude = minutely, hourly
 //--------------------------------------------------------------
     function oneCall(lat, lon) {
         var url = ``;
@@ -153,30 +174,15 @@ function pickForcasts(forcastData) {
                 console.log( data );
             })
     }
-    //which api to use??? oncall not working not free?
-        // lat
+   
     
-        // lon
-    
-        // units = imperial
-    
-        // exclude = minutely, hourly
-
-// Print/Render the weather data to the page.
-
-// From the <form> element, listen to the "submit"
-
-// From the <button> element, listen to the "click"
-
-    //Select <input>, get its value, and provide it to the geo API
-
-// From the <button> container element, listen to the <button> "click"
-
-    // Get the city from the button's data attribute
 
     $("#searchBtnId").on("click", function() {
         var cityNameFromUser = $("#cityTxtBxId").val();
         populateCityForcast(cityNameFromUser);
+
+        
+
     })
 
     $(".cityBtnCls").on("click", function(event) {
@@ -196,3 +202,15 @@ function pickForcasts(forcastData) {
         // }
     // })
     //-------------------------------------------
+
+    // Print/Render the weather data to the page.
+
+// From the <form> element, listen to the "submit"
+
+// From the <button> element, listen to the "click"
+
+    //Select <input>, get its value, and provide it to the geo API
+
+// From the <button> container element, listen to the <button> "click"
+
+    // Get the city from the button's data attribute
